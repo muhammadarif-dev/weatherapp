@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App — Muhammad Arif</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-brand">
+    <img src="logo.png" alt="Muhammad Arif Logo"/>
+  </a>
+  <span class="nav-title">Weather Forecast</span>
+</nav>
+
+<!-- SEARCH SECTION -->
+<div class="search-section">
+  <h1 class="app-title">Weather <span>Forecast</span></h1>
+  <p class="app-subtitle">Real-time weather data worldwide</p>
+
+  <div class="search-box">
+    <input type="text" class="search-input" id="cityInput" placeholder="Enter city name... e.g. Lahore"/>
+    <button class="search-btn" onclick="searchWeather()">
+      <i class="bi bi-search"></i> Search
+    </button>
+  </div>
+
+  <button class="location-btn" onclick="getLocation()">
+    <i class="bi bi-geo-alt-fill"></i> USE MY LOCATION
+  </button>
+
+  <div class="error-msg" id="errorMsg"></div>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p class="loading-text">FETCHING WEATHER DATA...</p>
+</div>
+
+<!-- WELCOME -->
+<div class="welcome-section" id="welcomeSection">
+  <div class="welcome-icon">🌤️</div>
+  <p class="welcome-text">Search for any city in the world to get real-time weather data, forecasts, humidity, wind speed, and much more!</p>
+  <div class="quick-cities">
+    <button class="location-btn" onclick="quickSearch('Lahore')"><i class="bi bi-geo"></i> Lahore</button>
+    <button class="location-btn" onclick="quickSearch('Karachi')"><i class="bi bi-geo"></i> Karachi</button>
+    <button class="location-btn" onclick="quickSearch('Islamabad')"><i class="bi bi-geo"></i> Islamabad</button>
+    <button class="location-btn" onclick="quickSearch('London')"><i class="bi bi-geo"></i> London</button>
+    <button class="location-btn" onclick="quickSearch('Dubai')"><i class="bi bi-geo"></i> Dubai</button>
+  </div>
+</div>
+
+<!--WEATHER SECTION -->
+<div class="weather-section" id="weatherSection">
+  <div class="container-fluid px-3">
+
+    <!-- Unit Toggle -->
+    <div class="unit-toggle mb-3">
+      <button class="unit-btn active" id="celsiusBtn" onclick="switchUnit('C')">°C Celsius</button>
+      <button class="unit-btn" id="fahrenheitBtn" onclick="switchUnit('F')">°F Fahrenheit</button>
+    </div>
+
+    <!-- Main Card -->
+    <div class="main-card">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <div class="city-name" id="cityName">—</div>
+          <div class="city-country" id="cityCountry">—</div>
+          <div class="weather-main">
+            <div class="weather-icon" id="weatherIcon">🌤️</div>
+            <div>
+              <div class="temp-big" id="tempBig">—</div>
+              <div class="weather-desc" id="weatherDesc">—</div>
+              <div class="feels-like" id="feelsLike">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <div class="date-time" id="dateTime">—</div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="row g-3 mt-2">
+        <div class="col-6 col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-droplet-fill"></i></div>
+            <div>
+              <div class="stat-label">Humidity</div>
+              <div class="stat-value" id="humidity">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-wind"></i></div>
+            <div>
+              <div class="stat-label">Wind Speed</div>
+              <div class="stat-value" id="windSpeed">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card purple">
+            <div class="stat-icon purple"><i class="bi bi-eye-fill"></i></div>
+            <div>
+              <div class="stat-label">Visibility</div>
+              <div class="stat-value" id="visibility">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card purple">
+            <div class="stat-icon purple"><i class="bi bi-speedometer2"></i></div>
+            <div>
+              <div class="stat-label">Pressure</div>
+              <div class="stat-value" id="pressure">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sunrise / Sunset -->
+    <div class="sun-card">
+      <div class="forecast-title">🌅 Sun Times</div>
+      <div class="row">
+        <div class="col-6">
+          <div class="sun-item">
+            <div class="sun-icon">🌄</div>
+            <div class="sun-label">SUNRISE</div>
+            <div class="sun-time" id="sunrise">—</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="sun-item">
+            <div class="sun-icon">🌇</div>
+            <div class="sun-label">SUNSET</div>
+            <div class="sun-time" id="sunset">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5-Day Forecast -->
+    <div class="forecast-card">
+      <div class="forecast-title">📅 5-Day Forecast</div>
+      <div class="row g-2" id="forecastRow"></div>
+    </div>
+
+  </div>
+</div>
+
+<!--FOOTER -->
+<footer>
+  Built and designed By<span class="accent"></span> &nbsp;·&nbsp;
+  <span class="accent2">Muhammad Arif . 2026</span> &nbsp;·&nbsp;
+ 
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
