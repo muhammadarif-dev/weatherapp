@@ -418,12 +418,7 @@ footer {
 footer .accent { color: var(--accent); }
 footer .accent2 { color: var(--accent2); }
 
-/* ── MOBILE ── */
-@media (max-width: 576px) {
-  .main-card { padding: 1.5rem; }
-  .weather-icon { font-size: 3.5rem; }
-  nav { padding: 0.3rem 1rem; }
-}
+
 
 /* responsivness on mobile */
 
