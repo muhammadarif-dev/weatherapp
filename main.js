@@ -1,5 +1,6 @@
 //API KEY (OpenWeatherMap-Free)
-const API_KEY = 'bd5e378503939ddaee76f12ad7a97608';
+//const API_KEY = 'bd5e378503939ddaee76f12ad7a97608';
+const API_KEY = "0499bb249a8f0dcd86eaa43a05817abe"
 
 let currentUnit = 'C';
 let currentData  = null;
